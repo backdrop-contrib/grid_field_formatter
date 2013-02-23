@@ -1,18 +1,18 @@
 <?php
 /**
  * @file
- * Module that gives you a field formatter, which enables field layout with Grid 
- * contents to a destination.
+ * Module that gives you a field formatter, which enables field layout with 
+ * Grid contents to a destination.
  */
 
-/** 
+/**
  * Implements hook_menu().
  */
 function grid_field_formatter_menu() {
   $items = array();
 
   $items['admin/config/content/grid-field-formatter'] = array(
-    'title' => t('Grid Field Formatter Settings'),
+    'title' => 'Grid Field Formatter Settings',
     'description' => 'Configuration form page for the Grid Field Formatter supported field types.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('grid_field_formatter_settings'),
@@ -29,15 +29,15 @@ function grid_field_formatter_menu() {
 function grid_field_formatter_field_formatter_info_alter(&$infos) {
   $field_types = variable_get('grid_field_formatter_field_types', array());
   // Only alter formatter forms for selected field types.
-  if (empty($field_types)){
+  if (empty($field_types)) {
     return;
   }
   $enable_field_type = array_filter($field_types);
 
   foreach ($infos as &$info) {
     $info_types = $info['field types'];
-    foreach ($info_types as $type){
-      if (in_array($type, $enable_field_type)){
+    foreach ($info_types as $type) {
+      if (in_array($type, $enable_field_type)) {
         // Add two properties to field formatter settings.
         $info['settings']['grid_field_formatter']['grid_enable'] = FALSE;
         $info['settings']['grid_field_formatter']['columns'] = '';
@@ -59,13 +59,13 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   }
 
   // Normalize the settings.
-  //dpm($summary);
   $grid_enable = $settings['grid_field_formatter']['grid_enable'];
   $columns = $settings['grid_field_formatter']['columns'];
 
   $summary_items = array();
   $summary_items[] = t('Multi-value Grid display: enabled');
-  $summary_items[] = t('Number of columns: @columns', array('@columns' => $columns));//WATCHOUT FOR XSS ATTACK and is numeric
+  // TODO: WATCHOUT FOR XSS ATTACK and is numeric.
+  $summary_items[] = t('Number of columns: @columns', array('@columns' => $columns));
 }
 
 /**
@@ -74,7 +74,11 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
  * Add additional field settings for the Grid Field Formatter.
  */
 function grid_field_formatter_field_formatter_settings_form_alter(&$settings_form, $context) {
-  // TODO: if the field formatter has no form, then we should at least allow users to change this settings.  
+  /**
+   * TODO: if the field formatter has no form, then we should at 
+   * least allow users to change this settings.
+   */
+
   $field = $context['field'];
   $entity_type = $context['instance']['entity_type'];
   $display = $context['instance']['display'][$context['view_mode']];
@@ -161,8 +165,8 @@ function grid_field_formatter_theme($existing, $type, $theme, $path) {
 function template_preprocess_grid_field_formatter(&$variables, $hook) {
   // Extend the core field module theming functions.
   template_preprocess_field($variables, $hook);
-  
-  $variables['columns'] = $variables['element']['columns'];  //To hook theme
+
+  $variables['columns'] = $variables['element']['columns'];
   // Add specific suggestions that can override the default implementation.
   $variables['theme_hook_suggestions'] += array(
     'grid-field-formatter__' . $variables['element']['#field_type'],
@@ -170,4 +174,3 @@ function template_preprocess_grid_field_formatter(&$variables, $hook) {
     'grid-field-formatter__' . $variables['element']['#field_name'] . '__' . $variables['element']['#bundle'],
   );
 }
-

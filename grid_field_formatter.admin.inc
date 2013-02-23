@@ -8,9 +8,9 @@
 /**
  * Menu callback: configuration of Grid Field Formatter field types.
  */
-function grid_field_formatter_settings($form, &$form_state){
+function grid_field_formatter_settings($form, &$form_state) {
   $options = array();
-  foreach(field_info_field_types() as $type_name => $type){
+  foreach (field_info_field_types() as $type_name => $type) {
     $options[$type_name] = $type['label'];
   }
 
@@ -25,7 +25,10 @@ function grid_field_formatter_settings($form, &$form_state){
   return system_settings_form($form);
 }
 
-function grid_field_formatter_settings_submit($form, &$form_state){
-  // flush field cache
+/**
+ * Flush field cache.
+ */
+function grid_field_formatter_settings_submit($form, &$form_state) {
+  // Flush field cache.
   field_cache_clear();
 }

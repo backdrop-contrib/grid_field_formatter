@@ -3,6 +3,5 @@ description = Any Field formatter layout to Grid table.
 core = 7.x
 
 dependencies[] = field_formatter_settings
-files[] = grid_field_formatter.module
 
 configure = admin/config/content/grid-field-formatter
