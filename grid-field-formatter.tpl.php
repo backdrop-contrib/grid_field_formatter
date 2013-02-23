@@ -60,6 +60,6 @@
   <?php $row = array('data' => $row, 'class' => array('grid-field-row')); ?>
 <?php endforeach; ?>
 
-<?php print theme('table', array('rows'=>$rows)); ?>
+<?php print theme('table', array('rows' => $rows)); ?>
 
 </div>
