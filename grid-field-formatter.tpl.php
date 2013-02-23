@@ -4,7 +4,6 @@
  * @file grid-field-formatter.tpl.php
  * Default template implementation to display the value of a field using Grid.
  *
- * // TODO: Change this: This file is not used and is here as a starting point for customization only.
  * @see theme_field()
  *
  * Available variables:
@@ -51,16 +50,16 @@
   <div class="field-label grid-field-label"<?php print $title_attributes; ?>><?php print $label ?>:&nbsp;</div>
 <?php endif; ?>
 
-<?php  
+<?php
   $rows = array_chunk($items, $columns);
-  foreach($rows as &$row){
-    foreach($row as &$row_item){
-      $row_item = array('data'=>render($row_item), 'class'=>'grid-field-col');
-    }
-    $row = array('data'=>$row, 'class'=>array('grid-field-row'));
-  }
-  print theme('table', array('rows'=>$rows));
 ?>
+<?php foreach ($rows as &$row) : ?>
+  <?php foreach($row as &$row_item) : ?>
+    <?php $row_item = array('data'=>render($row_item), 'class'=>'grid-field-col'); ?>
+  <?php endforeach; ?>
+  <?php $row = array('data'=>$row, 'class'=>array('grid-field-row')); ?>
+<?php endforeach; ?>
+
+<?php print theme('table', array('rows'=>$rows)); ?>
 
 </div>
-
