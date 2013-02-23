@@ -1,0 +1,173 @@
+<?php
+/**
+ * @file
+ * Module that gives you a field formatter, which enables field layout with Grid 
+ * contents to a destination.
+ */
+
+/** 
+ * Implements hook_menu().
+ */
+function grid_field_formatter_menu() {
+  $items = array();
+
+  $items['admin/config/content/grid-field-formatter'] = array(
+    'title' => t('Grid Field Formatter Settings'),
+    'description' => 'Configuration form page for the Grid Field Formatter supported field types.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('grid_field_formatter_settings'),
+    'file' => 'grid_field_formatter.admin.inc',
+    'access arguments' => array('administer site configuration'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_field_formatter_info_alter().
+ */
+function grid_field_formatter_field_formatter_info_alter(&$infos) {
+  $field_types = variable_get('grid_field_formatter_field_types', array());
+  // Only alter formatter forms for selected field types.
+  if (empty($field_types)){
+    return;
+  }
+  $enable_field_type = array_filter($field_types);
+
+  foreach ($infos as &$info) {
+    $info_types = $info['field types'];
+    foreach ($info_types as $type){
+      if (in_array($type, $enable_field_type)){
+        // Add two properties to field formatter settings.
+        $info['settings']['grid_field_formatter']['grid_enable'] = FALSE;
+        $info['settings']['grid_field_formatter']['columns'] = '';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary_alter().
+ */
+function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, $context) {
+  $display = $context['instance']['display'][$context['view_mode']];
+  $settings = $display['settings'];
+
+  // Break when no grid_enable field settings were found.
+  if (!isset($settings['grid_field_formatter'])) {
+    return;
+  }
+
+  // Normalize the settings.
+  //dpm($summary);
+  $grid_enable = $settings['grid_field_formatter']['grid_enable'];
+  $columns = $settings['grid_field_formatter']['columns'];
+
+  $summary_items = array();
+  $summary_items[] = t('Multi-value Grid display: enabled');
+  $summary_items[] = t('Number of columns: @columns', array('@columns' => $columns));//WATCHOUT FOR XSS ATTACK and is numeric
+}
+
+/**
+ * Implements hook_field_formatter_settings_form_alter().
+ * 
+ * Add additional field settings for the Grid Field Formatter.
+ */
+function grid_field_formatter_field_formatter_settings_form_alter(&$settings_form, $context) {
+  // TODO: if the field formatter has no form, then we should at least allow users to change this settings.  
+  $field = $context['field'];
+  $entity_type = $context['instance']['entity_type'];
+  $display = $context['instance']['display'][$context['view_mode']];
+  $settings = $display['settings'];
+
+  // Break when no Grid Field Formatter settings were found.
+  if (!isset($settings['grid_field_formatter']) || $field['cardinality'] == 1) {
+    return;
+  }
+  $settings['grid_field_formatter']['grid_enable'] = isset($settings['grid_field_formatter']['grid_enable']) ? $settings['grid_field_formatter']['grid_enable'] : FALSE;
+  $settings['grid_field_formatter']['columns'] = isset($settings['grid_field_formatter']['columns']) ? $settings['grid_field_formatter']['columns'] : '';
+
+  $settings_form['grid_field_formatter'] = array(
+    '#type' => 'container',
+    '#attributes' => array('class' => array('grided-field-wrapper')),
+  );
+  // Add a checkbox to the formatter settings form to enabled a grid layout.
+  $settings_form['grid_field_formatter']['grid_enable'] = array(
+    '#title' => t('Enable multi-value field display with a grid layout.'),
+    '#type' => 'checkbox',
+    '#default_value' => $settings['grid_field_formatter']['grid_enable'],
+  );
+  // Add a conditional text field for the number of columns of the grid.
+  $settings_form['grid_field_formatter']['columns'] = array(
+    '#title' => t('Grid layout number of columns'),
+    '#type' => 'textfield',
+    '#default_value' => $settings['grid_field_formatter']['columns'],
+    '#description' => t('Enter the number of columns for each row for the grid table layout.'),
+    '#states' => array(
+      'visible' => array(
+        'input[name$="[settings][grid_field_formatter][grid_enable]"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_attach_view_alter().
+ */
+function grid_field_formatter_field_attach_view_alter(&$output, $context) {
+  foreach (element_children($output) as $field_name) {
+    $element = $output[$field_name];
+    $instance = field_info_instance($element['#entity_type'], $field_name, $element['#bundle']);
+    $display = isset($instance['display'][$context['view_mode']]) ? $instance['display'][$context['view_mode']] : $instance['display']['default'];
+    $settings = $display['settings'];
+    $field = field_info_field($field_name);
+
+    // Continue when no Grid Field Formatter settings were found.
+    if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable']) || $field['cardinality'] == 1) {
+      continue;
+    }
+
+    // Override field theme with grid_field_formatter.
+    $output[$field_name]['#theme'] = 'grid_field_formatter';
+    $output[$field_name]['columns'] = (isset($settings['grid_field_formatter']['columns'])) ? $settings['grid_field_formatter']['columns'] : 1;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function grid_field_formatter_theme($existing, $type, $theme, $path) {
+  return array(
+    'grid_field_formatter' => array(
+      'render element' => 'element',
+      'template' => 'grid-field-formatter',
+    ),
+  );
+}
+
+/**
+ * Theme preprocess function for grid_field_formatter. 
+ *
+ * This function essentially extends the core field module theming methods, in
+ * particular template_preprocess_field. It also introduces new field template
+ * suggestions such as:
+ *   - grid-field-formatter.tpl.php
+ *   - grid-field-formatter-[FIELD_TYPE].tpl.php
+ *   - grid-field-formatter-[FIELD_NAME].tpl.php
+ *   - grid-field-formatter-[FIELD_NAME]-[BUNDLE].tpl.php
+ *
+ * @see grid-field-formatter.tpl.php
+ */
+function template_preprocess_grid_field_formatter(&$variables, $hook) {
+  // Extend the core field module theming functions.
+  template_preprocess_field($variables, $hook);
+  
+  $variables['columns'] = $variables['element']['columns'];  //To hook theme
+  // Add specific suggestions that can override the default implementation.
+  $variables['theme_hook_suggestions'] += array(
+    'grid-field-formatter__' . $variables['element']['#field_type'],
+    'grid-field-formatter__' . $variables['element']['#field_name'],
+    'grid-field-formatter__' . $variables['element']['#field_name'] . '__' . $variables['element']['#bundle'],
+  );
+}
+
