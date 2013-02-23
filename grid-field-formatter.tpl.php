@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file grid-field-formatter.tpl.php
+ * @file
  * Default template implementation to display the value of a field using Grid.
  *
  * @see theme_field()
@@ -55,9 +55,9 @@
 ?>
 <?php foreach ($rows as &$row) : ?>
   <?php foreach($row as &$row_item) : ?>
-    <?php $row_item = array('data'=>render($row_item), 'class'=>'grid-field-col'); ?>
+    <?php $row_item = array('data' => render($row_item), 'class' => 'grid-field-col'); ?>
   <?php endforeach; ?>
-  <?php $row = array('data'=>$row, 'class'=>array('grid-field-row')); ?>
+  <?php $row = array('data' => $row, 'class' => array('grid-field-row')); ?>
 <?php endforeach; ?>
 
 <?php print theme('table', array('rows'=>$rows)); ?>

@@ -76,7 +76,6 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
 function grid_field_formatter_field_formatter_settings_form_alter(&$settings_form, $context) {
   // TODO: if the field formatter has no form, then we should at
   // least allow users to change this settings.
-
   $field = $context['field'];
   $entity_type = $context['instance']['entity_type'];
   $display = $context['instance']['display'][$context['view_mode']];
