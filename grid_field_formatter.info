@@ -1,7 +1,6 @@
 name = Grid Field Formatter
 description = Any Field formatter layout to Grid table.
 core = 7.x
-
+package = Fields
 dependencies[] = field_formatter_settings
-
 configure = admin/config/content/grid-field-formatter
