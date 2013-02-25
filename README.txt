@@ -90,7 +90,7 @@ Grid Field Formatter should be made available.
 content type, for example) with one of the field of the type that was selected
 in 2.a, to configure the formatter (See attached screenshots).
 For example: the page content type:
-Home » Administration » Structure » Content types » Page » Manage display
+Home Â» Administration Â» Structure Â» Content types Â» Page Â» Manage display
 
 In the field formatter settings form, enable Grid Field Formatter and provide
 the number of columns (don't forget to save the form).
