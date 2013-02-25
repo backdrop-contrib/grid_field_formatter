@@ -179,9 +179,9 @@ function grid_field_formatter_theme($existing, $type, $theme, $path) {
  * particular template_preprocess_field. It also introduces new field template
  * suggestions such as:
  *   - grid-field-formatter.tpl.php
- *   - grid-field-formatter-[FIELD_TYPE].tpl.php
- *   - grid-field-formatter-[FIELD_NAME].tpl.php
- *   - grid-field-formatter-[FIELD_NAME]-[BUNDLE].tpl.php
+ *   - grid-field-formatter--[FIELD_TYPE].tpl.php
+ *   - grid-field-formatter--[FIELD_NAME].tpl.php
+ *   - grid-field-formatter--[FIELD_NAME]--[BUNDLE].tpl.php
  *
  * @see grid-field-formatter.tpl.php
  */
@@ -191,9 +191,9 @@ function template_preprocess_grid_field_formatter(&$variables, $hook) {
 
   $variables['columns'] = $variables['element']['columns'];
   // Add specific suggestions that can override the default implementation.
-  $variables['theme_hook_suggestions'] += array(
-    'grid-field-formatter__' . $variables['element']['#field_type'],
-    'grid-field-formatter__' . $variables['element']['#field_name'],
-    'grid-field-formatter__' . $variables['element']['#field_name'] . '__' . $variables['element']['#bundle'],
-  );
+  $variables['theme_hook_suggestions'] = array(
+    'grid_field_formatter__' . $variables['element']['#field_type'],
+    'grid_field_formatter__' . $variables['element']['#field_name'],
+    'grid_field_formatter__' . $variables['element']['#field_name'] . '__' . $variables['element']['#bundle'],
+  ) + $variables['theme_hook_suggestions'];
 }
