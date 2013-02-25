@@ -104,8 +104,9 @@ function grid_field_formatter_field_formatter_settings_form_alter(&$settings_for
   $settings_form['grid_field_formatter']['columns'] = array(
     '#title' => t('Grid layout number of columns'),
     '#type' => 'textfield',
-    '#default_value' => $settings['grid_field_formatter']['columns'],
+    '#default_value' => isset($settings['grid_field_formatter']['columns']) ? $settings['grid_field_formatter']['columns'] : 1,
     '#description' => t('Enter the number of columns for each row for the grid table layout.'),
+    '#element_validate' => array('grid_field_formatter_element_validate_columns'),
     '#states' => array(
       'visible' => array(
         'input[name$="[settings][grid_field_formatter][grid_enable]"]' => array('checked' => TRUE),
@@ -133,6 +134,17 @@ function grid_field_formatter_field_attach_view_alter(&$output, $context) {
     // Override field theme with grid_field_formatter.
     $output[$field_name]['#theme'] = 'grid_field_formatter';
     $output[$field_name]['columns'] = (isset($settings['grid_field_formatter']['columns'])) ? $settings['grid_field_formatter']['columns'] : 1;
+  }
+}
+
+/**
+ * Form element validation handler for columns field in settings form.
+ */
+function grid_field_formatter_element_validate_columns($element, &$form_state) {
+  $value = $element['#value'];
+  // The columns value must be number and greater than 0.
+  if (!(is_numeric($value) && $value > 0)) {
+    form_error($element, t('The columns value must be number and greater than 0.'));
   }
 }
 
