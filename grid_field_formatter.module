@@ -154,9 +154,9 @@ function grid_field_formatter_field_attach_view_alter(&$output, $context) {
  */
 function grid_field_formatter_element_validate_columns($element, &$form_state) {
   $value = $element['#value'];
-  // The columns value must be number and greater than 0.
+  // The number of columns must be valid number and greater than 0.
   if (!(is_numeric($value) && $value > 0)) {
-    form_error($element, t('The columns value must be number and greater than 0.'));
+    form_error($element, t('The number of columns must be valid number and greater than 0.'));
   }
 }
 
