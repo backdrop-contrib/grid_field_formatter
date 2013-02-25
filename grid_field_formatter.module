@@ -5,6 +5,8 @@
  * Grid contents to a destination.
  */
 
+define('GRID_FIELD_FORMATTER_DEFAULT_COLUMNS', 1);
+
 /**
  * Implements hook_menu().
  */
@@ -35,12 +37,21 @@ function grid_field_formatter_field_formatter_info_alter(&$infos) {
   $enable_field_type = array_filter($field_types);
 
   foreach ($infos as &$info) {
+    // Add a settings array if no settings were found.
+    if (!isset($info['settings']) || !is_array($info['settings'])) {
+      $info['settings'] = array();
+    }
+    
     $info_types = $info['field types'];
     foreach ($info_types as $type) {
       if (in_array($type, $enable_field_type)) {
         // Add two properties to field formatter settings.
-        $info['settings']['grid_field_formatter']['grid_enable'] = FALSE;
-        $info['settings']['grid_field_formatter']['columns'] = '';
+        $info['settings'] += array(
+          'grid_field_formatter' => array(
+            'grid_enable' => FALSE,
+            'columns' => GRID_FIELD_FORMATTER_DEFAULT_COLUMNS,
+          )
+        );
       }
     }
   }
@@ -54,7 +65,10 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   $settings = $display['settings'];
 
   // Break when no grid_enable field settings were found.
-  if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable'])) {
+  if (!isset($settings['grid_field_formatter'])) {
+    return;
+  }elseif(empty($settings['grid_field_formatter']['grid_enable'])){
+    $summary .= ' ';
     return;
   }
 
@@ -66,7 +80,7 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   $summary_items[] = $summary;
   $summary_items[] = t('Multi-value Grid display: enabled');
   $summary_items[] = t('Number of columns: @columns', array('@columns' => filter_xss_admin($columns)));
-  
+
   $summary = implode('<br>', $summary_items);
 }
 
@@ -76,15 +90,13 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
  * Add additional field settings for the Grid Field Formatter.
  */
 function grid_field_formatter_field_formatter_settings_form_alter(&$settings_form, $context) {
-  // TODO: if the field formatter has no form, then we should at
-  // least allow users to change this settings.
   $field = $context['field'];
   $entity_type = $context['instance']['entity_type'];
   $display = $context['instance']['display'][$context['view_mode']];
   $settings = $display['settings'];
 
   // Break when no Grid Field Formatter settings were found.
-  if (!isset($settings['grid_field_formatter']) || $field['cardinality'] == 1) {
+  if (!isset($settings['grid_field_formatter'])) {
     return;
   }
   $settings['grid_field_formatter']['grid_enable'] = isset($settings['grid_field_formatter']['grid_enable']) ? $settings['grid_field_formatter']['grid_enable'] : FALSE;
@@ -104,7 +116,7 @@ function grid_field_formatter_field_formatter_settings_form_alter(&$settings_for
   $settings_form['grid_field_formatter']['columns'] = array(
     '#title' => t('Grid layout number of columns'),
     '#type' => 'textfield',
-    '#default_value' => isset($settings['grid_field_formatter']['columns']) ? $settings['grid_field_formatter']['columns'] : 1,
+    '#default_value' => isset($settings['grid_field_formatter']['columns']) ? $settings['grid_field_formatter']['columns'] : GRID_FIELD_FORMATTER_DEFAULT_COLUMNS,
     '#description' => t('Enter the number of columns for each row for the grid table layout.'),
     '#element_validate' => array('grid_field_formatter_element_validate_columns'),
     '#states' => array(
@@ -127,7 +139,7 @@ function grid_field_formatter_field_attach_view_alter(&$output, $context) {
     $field = field_info_field($field_name);
 
     // Continue when no Grid Field Formatter settings were found.
-    if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable']) || $field['cardinality'] == 1) {
+    if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable'])) {
       continue;
     }
 
