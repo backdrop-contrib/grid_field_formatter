@@ -54,7 +54,7 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   $settings = $display['settings'];
 
   // Break when no grid_enable field settings were found.
-  if (!isset($settings['grid_field_formatter'])) {
+  if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable'])) {
     return;
   }
 
@@ -63,9 +63,11 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   $columns = $settings['grid_field_formatter']['columns'];
 
   $summary_items = array();
+  $summary_items[] = $summary;
   $summary_items[] = t('Multi-value Grid display: enabled');
-  // TODO: WATCHOUT FOR XSS ATTACK and is numeric.
-  $summary_items[] = t('Number of columns: @columns', array('@columns' => $columns));
+  $summary_items[] = t('Number of columns: @columns', array('@columns' => filter_xss_admin($columns)));
+  
+  $summary = implode('<br>', $summary_items);
 }
 
 /**
