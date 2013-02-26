@@ -36,7 +36,7 @@ function grid_field_formatter_field_formatter_info_alter(&$infos) {
   }
   $enable_field_type = array_filter($field_types);
 
-  foreach ($infos as &$info) {
+  foreach ($infos as $formatter_name => &$info) {
     // Add a settings array if no settings were found.
     if (!isset($info['settings']) || !is_array($info['settings'])) {
       $info['settings'] = array();
@@ -52,20 +52,28 @@ function grid_field_formatter_field_formatter_info_alter(&$infos) {
             'columns' => GRID_FIELD_FORMATTER_DEFAULT_COLUMNS,
           )
         );
+        $enabled_field_formmater[] = $formatter_name;
       }
     }
   }
+  $enabled_field_formmater = array_unique($enabled_field_formmater);
+  // Cache the enabled field formmater.
+  cache_set('enabled_field_formmater', serialize($enabled_field_formmater));
 }
 
 /**
  * Implements hook_field_formatter_settings_summary_alter().
  */
 function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, $context) {
+  $enabled_field_formmater = array();
+  $enabled_field_formmater = grid_field_formatter_get_enabled_field_formmater();
+
   $display = $context['instance']['display'][$context['view_mode']];
   $settings = $display['settings'];
+  $type = $display['type'];
 
   // Break when no grid_enable field settings were found.
-  if (!isset($settings['grid_field_formatter'])) {
+  if (!isset($settings['grid_field_formatter']) || !in_array($type, $enabled_field_formmater)) {
     return;
   }elseif(empty($settings['grid_field_formatter']['grid_enable'])){
     $summary .= ' ';
@@ -90,13 +98,17 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
  * Add additional field settings for the Grid Field Formatter.
  */
 function grid_field_formatter_field_formatter_settings_form_alter(&$settings_form, $context) {
+  $enabled_field_formmater = array();
+  $enabled_field_formmater = grid_field_formatter_get_enabled_field_formmater();
+
   $field = $context['field'];
   $entity_type = $context['instance']['entity_type'];
   $display = $context['instance']['display'][$context['view_mode']];
   $settings = $display['settings'];
+  $type = $display['type'];
 
   // Break when no Grid Field Formatter settings were found.
-  if (!isset($settings['grid_field_formatter'])) {
+  if (!isset($settings['grid_field_formatter']) || !in_array($type, $enabled_field_formmater)) {
     return;
   }
   $settings['grid_field_formatter']['grid_enable'] = isset($settings['grid_field_formatter']['grid_enable']) ? $settings['grid_field_formatter']['grid_enable'] : FALSE;
@@ -132,14 +144,18 @@ function grid_field_formatter_field_formatter_settings_form_alter(&$settings_for
  */
 function grid_field_formatter_field_attach_view_alter(&$output, $context) {
   foreach (element_children($output) as $field_name) {
+    $enabled_field_formmater = array();
+    $enabled_field_formmater = grid_field_formatter_get_enabled_field_formmater();
+
     $element = $output[$field_name];
     $instance = field_info_instance($element['#entity_type'], $field_name, $element['#bundle']);
     $display = isset($instance['display'][$context['view_mode']]) ? $instance['display'][$context['view_mode']] : $instance['display']['default'];
     $settings = $display['settings'];
+    $type = $display['type'];
     $field = field_info_field($field_name);
 
     // Continue when no Grid Field Formatter settings were found.
-    if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable'])) {
+    if (!isset($settings['grid_field_formatter']) || empty($settings['grid_field_formatter']['grid_enable']) || !in_array($type, $enabled_field_formmater)) {
       continue;
     }
 
@@ -196,4 +212,19 @@ function template_preprocess_grid_field_formatter(&$variables, $hook) {
     'grid_field_formatter__' . $variables['element']['#field_name'],
     'grid_field_formatter__' . $variables['element']['#field_name'] . '__' . $variables['element']['#bundle'],
   ) + $variables['theme_hook_suggestions'];
+}
+
+/**
+ * Helper function: Get enabled the field formatter.
+ * 
+ * Get all enabled the field formatter.
+ * 
+ * @return array
+ *   Return all enabled the field formatter.
+ */
+function grid_field_formatter_get_enabled_field_formmater(){
+  $enabled_field_formmater_cache = cache_get('enabled_field_formmater');
+  $enabled_field_formmater = unserialize($enabled_field_formmater_cache->data);
+
+  return $enabled_field_formmater;
 }
