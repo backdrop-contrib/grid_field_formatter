@@ -21,7 +21,7 @@ function grid_field_formatter_settings($form, &$form_state) {
     '#options' => $options,
     '#default_value' => variable_get('grid_field_formatter_field_types', array()),
   );
-  
+
   $form['#submit'][] = 'grid_field_formatter_settings_submit';
 
   return system_settings_form($form);

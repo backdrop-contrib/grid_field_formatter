@@ -41,7 +41,7 @@ function grid_field_formatter_field_formatter_info_alter(&$infos) {
     if (!isset($info['settings']) || !is_array($info['settings'])) {
       $info['settings'] = array();
     }
-    
+
     $info_types = $info['field types'];
     foreach ($info_types as $type) {
       if (in_array($type, $enable_field_type)) {
@@ -50,7 +50,7 @@ function grid_field_formatter_field_formatter_info_alter(&$infos) {
           'grid_field_formatter' => array(
             'grid_enable' => FALSE,
             'columns' => GRID_FIELD_FORMATTER_DEFAULT_COLUMNS,
-          )
+          ),
         );
         $enabled_field_formmater[] = $formatter_name;
       }
@@ -75,7 +75,8 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   // Break when no grid_enable field settings were found.
   if (!isset($settings['grid_field_formatter']) || !in_array($type, $enabled_field_formmater)) {
     return;
-  }elseif(empty($settings['grid_field_formatter']['grid_enable'])){
+  }
+  elseif (empty($settings['grid_field_formatter']['grid_enable'])) {
     $summary .= ' ';
     return;
   }
@@ -89,7 +90,7 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   $summary_items[] = t('Multi-value Grid display: enabled');
   $summary_items[] = t('Number of columns: @columns', array('@columns' => filter_xss_admin($columns)));
 
-  $summary = implode('<br>', $summary_items);
+  $summary = implode('<br/>', $summary_items);
 }
 
 /**
@@ -222,7 +223,7 @@ function template_preprocess_grid_field_formatter(&$variables, $hook) {
  * @return array
  *   Return all enabled the field formatter.
  */
-function grid_field_formatter_get_enabled_field_formmater(){
+function grid_field_formatter_get_enabled_field_formmater() {
   $enabled_field_formmater_cache = cache_get('enabled_field_formmater');
   $enabled_field_formmater = unserialize($enabled_field_formmater_cache->data);
 
