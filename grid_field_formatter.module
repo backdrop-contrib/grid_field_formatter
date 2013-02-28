@@ -89,7 +89,7 @@ function grid_field_formatter_field_formatter_settings_summary_alter(&$summary, 
   $summary_items = array();
   $summary_items[] = $summary;
   $summary_items[] = t('Multi-value Grid display: enabled');
-  $summary_items[] = t('Number of columns: @columns', array('@columns' => filter_xss_admin($columns)));
+  $summary_items[] = t('Number of columns: @columns', array('@columns' => $columns));
 
   $summary = implode('<br/>', $summary_items);
 }
