@@ -230,3 +230,17 @@ function grid_field_formatter_get_enabled_field_formatter() {
 
   return $enabled_field_formatter;
 }
+
+/**
+ * Helper function: Get an array of all fields formatted for an options list.
+ * 
+ * @return array
+ *   A formatted array of options with value and label.
+ */
+function grid_field_formatter_field_types_options_list() {
+  $options = array();
+  foreach (field_info_field_types() as $type_name => $type) {
+    $options[$type_name] = $type['label'];
+  }
+  return $options;
+}
