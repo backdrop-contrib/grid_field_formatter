@@ -163,7 +163,8 @@ function grid_field_formatter_field_attach_view_alter(&$output, $context) {
 
     // Override field theme with grid_field_formatter.
     $output[$field_name]['#theme'] = 'grid_field_formatter';
-    $output[$field_name]['columns'] = (isset($settings['grid_field_formatter']['columns'])) ? $settings['grid_field_formatter']['columns'] : 1;
+    // Columns is a property so it should start with a #, see drupal_render.
+    $output[$field_name]['#columns'] = (isset($settings['grid_field_formatter']['columns'])) ? $settings['grid_field_formatter']['columns'] : 1;
   }
 }
 
@@ -207,7 +208,7 @@ function template_preprocess_grid_field_formatter(&$variables, $hook) {
   // Extend the core field module theming functions.
   template_preprocess_field($variables, $hook);
 
-  $variables['columns'] = $variables['element']['columns'];
+  $variables['columns'] = $variables['element']['#columns'];
   // Add specific suggestions that can override the default implementation.
   $variables['theme_hook_suggestions'] = array(
     'grid_field_formatter__' . $variables['element']['#field_type'],
