@@ -43,17 +43,20 @@ function grid_field_formatter_field_formatter_info_alter(&$infos) {
       $info['settings'] = array();
     }
 
-    $info_types = $info['field types'];
-    foreach ($info_types as $type) {
-      if (in_array($type, $enable_field_type)) {
-        // Add two properties to field formatter settings.
-        $info['settings'] += array(
-          'grid_field_formatter' => array(
-            'grid_enable' => FALSE,
-            'columns' => GRID_FIELD_FORMATTER_DEFAULT_COLUMNS,
-          ),
-        );
-        $enabled_field_formatter[] = $formatter_name;
+    // Ensure the 'field types' index exists before processing formatters.
+    if (isset($info['field types'])) {
+      $info_types = $info['field types'];
+      foreach ($info_types as $type) {
+        if (in_array($type, $enable_field_type)) {
+          // Add two properties to field formatter settings.
+          $info['settings'] += array(
+            'grid_field_formatter' => array(
+              'grid_enable' => FALSE,
+              'columns' => GRID_FIELD_FORMATTER_DEFAULT_COLUMNS,
+            ),
+          );
+          $enabled_field_formatter[] = $formatter_name;
+        }
       }
     }
   }
