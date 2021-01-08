@@ -72,7 +72,7 @@ display or theme utilities related with the markup of fields.
 3 - Installation and configuration:
 
 a. Prerequisite: 
-Requires Field formatter settings to be installed.
+No longer Requires Field formatter settings to be installed - it is in Backdrop core.
 (http://drupal.org/project/field_formatter_settings)
 
 b. Download the module and simply copy it into your contributed modules folder:
@@ -95,14 +95,26 @@ Home » Administration » Structure » Content types » Page » Manage display
 In the field formatter settings form, enable Grid Field Formatter and provide
 the number of columns (don't forget to save the form).
 
-
-
 4 - Contributions are welcome!!
 
 Feel free to follow up in the issue queue for any contributions, bug reports,
 feature requests.
 Tests, feedback or comments in general are highly appreciated.
 
-5 - Credits:
+5 - Documentation
+Additional documentation is located in the Wiki: https://github.com/backdrop-contrib/grid_field_formatter/wiki/Documentation.
 
+6 - Issues
+Bugs and Feature requests should be reported in the Issue Queue: https://github.com/backdrop-contrib/module_filter/issues.
+
+7 - Current Maintainers
+Rick Etsell.
+Seeking additional maintainers.
+
+8 - Credits
 This module was sponsored by DAVYIN Internet Solutions [http://www.davyin.com].
+Drupal Maintainer: David Suissa (DYdave) https://www.drupal.org/user/467284
+Ported to Backdrop CMS by <a href="https://github.com/Retsell">Rick Etsell</a>, Jan 2021.
+
+9 - License
+This project is GPL v2 software. See the LICENSE.txt file in this directory for complete text.
