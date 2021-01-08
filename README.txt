@@ -101,9 +101,6 @@ Feel free to follow up in the issue queue for any contributions, bug reports,
 feature requests.
 Tests, feedback or comments in general are highly appreciated.
 
-5 - Documentation
-Additional documentation is located in the Wiki: https://github.com/backdrop-contrib/grid_field_formatter/wiki/Documentation.
-
 6 - Issues
 Bugs and Feature requests should be reported in the Issue Queue: https://github.com/backdrop-contrib/module_filter/issues.
 
