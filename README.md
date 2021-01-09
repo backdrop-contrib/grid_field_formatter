@@ -105,7 +105,7 @@ Tests, feedback or comments in general are highly appreciated.
 Bugs and Feature requests should be reported in the Issue Queue: https://github.com/backdrop-contrib/module_filter/issues.
 
 7 - Current Maintainers
-- [Rick Etsell[ (https://github.com/Retsell)
+- [Rick Etsell] (https://github.com/Retsell)
 - Seeking additional maintainers.
 
 8 - Credits
