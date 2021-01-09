@@ -16,7 +16,7 @@ function grid_field_formatter_menu() {
   $items['admin/config/content/grid-field-formatter'] = array(
     'title' => 'Grid Field Formatter Settings',
     'description' => 'Configuration form page for the Grid Field Formatter supported field types.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('grid_field_formatter_settings'),
     'file' => 'grid_field_formatter.admin.inc',
     'access arguments' => array('administer site configuration'),
@@ -29,7 +29,7 @@ function grid_field_formatter_menu() {
  * Implements hook_field_formatter_info_alter().
  */
 function grid_field_formatter_field_formatter_info_alter(&$infos) {
-  $field_types = variable_get('grid_field_formatter_field_types', array());
+  $field_types = config_get('grid_field_formatter.settings','grid_field_formatter_field_types');
   // Only alter formatter forms for selected field types.
   if (empty($field_types)) {
     return;
