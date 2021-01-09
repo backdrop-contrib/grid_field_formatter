@@ -111,7 +111,7 @@ Bugs and Feature requests should be reported in the Issue Queue: https://github.
 8 - Credits:
 - This module was sponsored by DAVYIN Internet Solutions [http://www.davyin.com].
 - Drupal Maintainer: David Suissa (DYdave) https://www.drupal.org/user/467284
-  Ported to Backdrop CMS by Rick Etsell, https://github.com/Retsell, Jan 2021.
+- Ported to Backdrop CMS by Rick Etsell, https://github.com/Retsell, Jan 2021.
 
 9 - License
 This project is GPL v2 software. See the LICENSE.txt file in this directory for complete text.
