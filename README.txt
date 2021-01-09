@@ -1,7 +1,6 @@
-As an attempt to provide a solution to:
-How do I format a multi value field as a grid? [http://drupal.org/node/1826330]
-the Grid Field Formatter module provides a simple way to overridde the display
-of multi-value fields to show as a grid/table with a certain number of columns.
+Grid Field Formatter provides a simple way to display multi-value fields for 
+a node in a grid/table with a certain number of columns.
+[http://drupal.org/node/1826330]
 
 This module has no pretention of implementing any field: it is not a Table
 field, such as TableField (http://drupal.org/project/tablefield), or CCK Table
@@ -72,7 +71,7 @@ display or theme utilities related with the markup of fields.
 3 - Installation and configuration:
 
 a. Prerequisite: 
-No longer Requires Field formatter settings to be installed - it is in Backdrop core.
+No longer requires Field formatter settings to be installed - it is in Backdrop core.
 (http://drupal.org/project/field_formatter_settings)
 
 b. Download the module and simply copy it into your contributed modules folder:
@@ -83,7 +82,7 @@ More information at: Installing contributed modules (Drupal 7)
 
 b. Configuration:
 - After successful installation, browse to the "Grid Field Formatter" settings
-page (under Configuration > Content), and select the field types for which the
+page (under Configuration > Content Authoring), and select the field types for which the
 Grid Field Formatter should be made available.
 
 - Then, browse to the "Manage Display" settings page, for an entity (Node
