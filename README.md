@@ -76,10 +76,10 @@ No longer requires Field formatter settings to be installed - it is in Backdrop 
 (http://drupal.org/project/field_formatter_settings)
 
 b. Download the module and simply copy it into your contributed modules folder:
-[for example, your_drupal_path/sites/all/modules] and enable it from the
-modules administration/management page.
-More information at: Installing contributed modules (Drupal 7)
-[http://drupal.org/documentation/install/modules-themes/modules-7]
+[for example, your_backdrop_path/modules] and enable it from the
+admin/modules/list page.
+More information at: Installing contributed modules (Backdrop)
+[https://backdropcms.org/user-guide/modules-1]
 
 b. Configuration:
 - After successful installation, browse to the "Grid Field Formatter" settings
@@ -88,9 +88,9 @@ Grid Field Formatter should be made available.
 
 - Then, browse to the "Manage Display" settings page, for an entity (Node
 content type, for example) with one of the field of the type that was selected
-in 2.a, to configure the formatter (See attached screenshots).
+in 2.a, to configure the formatter.
 For example: the page content type:
-Home » Administration » Structure » Content types » Page » Manage display
+Home » Adminn » Structure » types » managage » Page » Manage display
 
 In the field formatter settings form, enable Grid Field Formatter and provide
 the number of columns (don't forget to save the form).
