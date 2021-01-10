@@ -14,7 +14,6 @@ few dependencies and trying to leverage the formatter hooks provided by
 #945524: Field formatter settings hooks in core (http://drupal.org/node/945524)
 to extend existing field formatters.
 
-
 1 - Implementation:
 
 The code is very similar to other modules built on top of Field formatter
@@ -95,7 +94,10 @@ Home » Adminn » Structure » types » managage » Page » Manage display
 In the field formatter settings form, enable Grid Field Formatter and provide
 the number of columns (don't forget to save the form).
 
-4 - Contributions are welcome!!
+4 - Documentation
+See https://github.com/backdrop-contrib/setup/wiki/Documentation
+
+5 - Contributions are welcome!!
 
 Feel free to follow up in the issue queue for any contributions, bug reports,
 feature requests.
