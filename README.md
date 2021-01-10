@@ -108,7 +108,7 @@ Bugs and Feature requests should be reported in the Issue Queue: https://github.
 
 7 - Current Maintainers
 - [Rick Etsell] (https://github.com/Retsell) 
-- [Tim Erickson]
+- [Tim Erickson] (https://github.com/stpaultim)
 - Seeking additional maintainers.
 
 8 - Credits:
