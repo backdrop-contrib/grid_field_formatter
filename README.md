@@ -104,7 +104,7 @@ feature requests.
 Tests, feedback or comments in general are highly appreciated.
 
 6 - Issues
-Bugs and Feature requests should be reported in the Issue Queue: https://github.com/backdrop-contrib/module_filter/issues.
+Bugs and Feature requests should be reported in the Issue Queue: https://github.com/backdrop-contrib/grid_field_formatter/issues.
 
 7 - Current Maintainers
 - [Rick Etsell] (https://github.com/Retsell) 
