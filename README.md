@@ -95,7 +95,7 @@ In the field formatter settings form, enable Grid Field Formatter and provide
 the number of columns (don't forget to save the form).
 
 4 - Documentation
-See https://github.com/backdrop-contrib/setup/wiki/Documentation
+See https://github.com/Retsell/grid_field_formatter/wiki/Grid-Field-Formatter
 
 5 - Contributions are welcome!!
 
