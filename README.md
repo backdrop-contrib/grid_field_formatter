@@ -1,4 +1,5 @@
-Grid Field Formatter provides a simple way to display multi-value fields for 
+# Grid Field Formatter ##
+provides a simple way to display multi-value fields for 
 a node in a grid/table with a certain number of columns. Great for images, 
 but works with most other fields too. A port of the Drupal project:
 [https://www.drupal.org/project/grid_field_formatter]
