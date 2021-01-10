@@ -1,7 +1,7 @@
 Grid Field Formatter provides a simple way to display multi-value fields for 
 a node in a grid/table with a certain number of columns. Great for images, 
 but works with most other fields too. A port of the Drupal project:
-[http://drupal.org/node/1826330]
+[https://www.drupal.org/project/grid_field_formatter]
 
 This module has no pretention of implementing any field: it is not a Table
 field, such as TableField (http://drupal.org/project/tablefield), or CCK Table
