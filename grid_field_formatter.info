@@ -4,4 +4,3 @@ description = Any Field formatter layout to Grid table.
 backdrop = 1.x
 package = Fields
 configure = admin/config/content/grid-field-formatter
-version = "1.x-1.1"
