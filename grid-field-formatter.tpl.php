@@ -44,7 +44,7 @@
  */
 ?>
 
-<div class="<?php print $classes; ?>"<?php print $attributes; ?>>
+<div class="<?php print implode(' ', $classes; ?>"<?php print backdrop_attributes($attributes; ?>>
 
 <?php if (!$label_hidden): ?>
   <div class="field-label grid-field-label"<?php print $title_attributes; ?>><?php print $label ?>:&nbsp;</div>
