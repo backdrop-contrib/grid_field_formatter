@@ -1,6 +1,6 @@
 type = module
 name = Grid Field Formatter
-description = Any Field formatter layout to Grid table.
+description = Enables any Field to display as a grid in a node.
 backdrop = 1.x
 package = Fields
 configure = admin/config/content/grid-field-formatter
